@@ -5,7 +5,7 @@
  * Orchestrates post creation:
  *  1. Picks a topic from the configured list
  *  2. Builds a prompt that includes all requirements
- *  3. Calls Gemini
+ *  3. Calls API
  *  4. Parses the structured response
  *  5. Inserts a post with status 'pending' for editorial review
  */
@@ -57,13 +57,13 @@ class AIPG_Generator {
 		$response = $provider->generate( $prompt );
 
 		if ( is_wp_error( $response ) ) {
-			return self::fail( 'Gemini API error: ' . $response->get_error_message(), $topic );
+			return self::fail( 'API error: ' . $response->get_error_message(), $topic );
 		}
 
 		// ── 4. Parse the response ─────────────────────────────────────────────
 		$parsed = self::parse_response( $response );
 		if ( ! $parsed ) {
-			return self::fail( 'Could not parse Gemini response into post fields.', $topic );
+			return self::fail( 'Could not parse API response into post fields.', $topic );
 		}
 
 		// ── 5. Insert the post ────────────────────────────────────────────────
@@ -124,7 +124,7 @@ PROMPT;
 	// ── Response parser ───────────────────────────────────────────────────────
 
 	/**
-	 * Parse the structured markers from the Gemini response.
+	 * Parse the structured markers from the API response.
 	 *
 	 * @param  string $text
 	 * @return array|false
