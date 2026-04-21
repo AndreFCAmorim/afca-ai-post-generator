@@ -11,11 +11,11 @@ if (
     isset( $_POST['aipg_clear_log'] ) &&
     check_admin_referer( 'aipg_clear_log', 'aipg_log_nonce' )
 ) {
-    delete_option( AIPG_LOG_OPTION );
+    delete_option( AFCA_AIPG_LOG_OPTION );
     echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Log cleared.', 'ai-post-generator' ) . '</p></div>';
 }
 
-$log = get_option( AIPG_LOG_OPTION, [] );
+$log = get_option( AFCA_AIPG_LOG_OPTION, [] );
 if ( ! is_array( $log ) ) {
     $log = [];
 }
