@@ -64,7 +64,7 @@ class AIPG_Provider_OpenAI_Compat extends AIPG_Provider_Base {
         if ( empty( $text ) ) {
             $reason = $data['choices'][0]['finish_reason'] ?? 'unknown';
             return new \WP_Error(
-                'aipg_empty_response',
+                'afca_aipg_empty_response',
                 sprintf( '%s returned an empty response. Finish reason: %s', $this->provider_name, $reason )
             );
         }

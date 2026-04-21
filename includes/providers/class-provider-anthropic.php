@@ -38,7 +38,7 @@ class AIPG_Provider_Anthropic extends AIPG_Provider_Base {
         $text = $data['content'][0]['text'] ?? '';
         if ( empty( $text ) ) {
             $reason = $data['stop_reason'] ?? 'unknown';
-            return new \WP_Error( 'aipg_empty_response', "Claude returned empty response. Stop reason: $reason" );
+            return new \WP_Error( 'afca_aipg_empty_response', "Claude returned empty response. Stop reason: $reason" );
         }
 
         return $text;

@@ -11,16 +11,16 @@ defined( 'ABSPATH' ) || exit;
 class AIPG_Settings {
 
 	// Core options
-	const OPT_ACTIVE_PROVIDER = 'aipg_active_provider';
-	const OPT_TOPICS          = 'aipg_topics';
-	const OPT_REQUIREMENTS    = 'aipg_requirements';
-	const OPT_SCHEDULE        = 'aipg_schedule';
-	const OPT_POSTS_PER_RUN   = 'aipg_posts_per_run';
-	const OPT_AUTHOR_ID       = 'aipg_author_id';
-	const OPT_POST_CATEGORY   = 'aipg_post_category';
-	const OPT_POST_TAGS       = 'aipg_post_tags';
-	const OPT_LANGUAGE        = 'aipg_language';
-	const OPT_ENABLED         = 'aipg_enabled';
+	const OPT_ACTIVE_PROVIDER = 'afca_aipg_active_provider';
+	const OPT_TOPICS          = 'afca_aipg_topics';
+	const OPT_REQUIREMENTS    = 'afca_aipg_requirements';
+	const OPT_SCHEDULE        = 'afca_aipg_schedule';
+	const OPT_POSTS_PER_RUN   = 'afca_aipg_posts_per_run';
+	const OPT_AUTHOR_ID       = 'afca_aipg_author_id';
+	const OPT_POST_CATEGORY   = 'afca_aipg_post_category';
+	const OPT_POST_TAGS       = 'afca_aipg_post_tags';
+	const OPT_LANGUAGE        = 'afca_aipg_language';
+	const OPT_ENABLED         = 'afca_aipg_enabled';
 
 	const PROVIDERS = [
 		'groq'       => [
@@ -158,7 +158,7 @@ class AIPG_Settings {
 			}
 		}
 		foreach ( self::PROVIDERS as $slug => $cfg ) {
-			$key = "aipg_model_{$slug}";
+			$key = "afca_aipg_model_{$slug}";
 			if ( false === get_option( $key ) ) {
 				add_option( $key, $cfg['default_model'] );
 			}
@@ -171,11 +171,11 @@ class AIPG_Settings {
 	}
 
 	public static function get_api_key_for( string $provider ): string {
-		return (string) get_option( "aipg_api_key_{$provider}", '' );
+		return (string) get_option( "afca_aipg_api_key_{$provider}", '' );
 	}
 
 	public static function get_model_for( string $provider ): string {
-		$saved   = (string) get_option( "aipg_model_{$provider}", '' );
+		$saved   = (string) get_option( "afca_aipg_model_{$provider}", '' );
 		$default = self::PROVIDERS[ $provider ]['default_model'] ?? '';
 		return $saved ?: $default;
 	}

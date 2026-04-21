@@ -205,11 +205,11 @@ PROMPT;
 			'post_type'    => 'post',
 			'post_date'    => current_time( 'mysql' ),
 			'meta_input'   => [
-				'_aipg_generated'    => '1',
-				'_aipg_topic'        => $topic,
-				'_aipg_provider'     => AIPG_Settings::get_active_provider(),
-				'_aipg_model'        => AIPG_Settings::get_model_for( AIPG_Settings::get_active_provider() ),
-				'_aipg_generated_at' => current_time( 'mysql' ),
+				'_afca_aipg_generated'    => '1',
+				'_afca_aipg_topic'        => $topic,
+				'_afca_aipg_provider'     => AIPG_Settings::get_active_provider(),
+				'_afca_aipg_model'        => AIPG_Settings::get_model_for( AIPG_Settings::get_active_provider() ),
+				'_afca_aipg_generated_at' => current_time( 'mysql' ),
 			],
 		];
 

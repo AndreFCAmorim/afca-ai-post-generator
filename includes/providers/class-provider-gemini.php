@@ -13,7 +13,7 @@ class AIPG_Provider_Gemini extends AIPG_Provider_Base {
 
     public function generate( string $prompt ) {
         if ( empty( $this->api_key ) ) {
-            return new \WP_Error( 'aipg_no_api_key', __( 'Gemini API key is not configured.', 'ai-post-generator' ) );
+            return new \WP_Error( 'afca_aipg_no_api_key', __( 'Gemini API key is not configured.', 'afca-ai-post-generator' ) );
         }
 
         $endpoint = self::API_BASE . $this->model . ':generateContent?key=' . $this->api_key;
@@ -45,13 +45,13 @@ class AIPG_Provider_Gemini extends AIPG_Provider_Base {
 
         if ( $code !== 200 ) {
             $msg = $data['error']['message'] ?? "HTTP $code";
-            return new \WP_Error( 'aipg_api_error', $msg );
+            return new \WP_Error( 'afca_aipg_api_error', $msg );
         }
 
         $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
         if ( empty( $text ) ) {
             $finish = $data['candidates'][0]['finishReason'] ?? 'UNKNOWN';
-            return new \WP_Error( 'aipg_empty_response', "Gemini returned empty response. Finish reason: $finish" );
+            return new \WP_Error( 'afca_aipg_empty_response', "Gemini returned empty response. Finish reason: $finish" );
         }
 
         return $text;

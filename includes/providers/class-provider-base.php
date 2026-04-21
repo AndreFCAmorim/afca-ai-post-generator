@@ -54,7 +54,7 @@ abstract class AIPG_Provider_Base {
      */
     protected function http_post( string $url, array $headers, array $body_array, int $timeout = 60 ) {
         if ( empty( $this->api_key ) ) {
-            return new \WP_Error( 'aipg_no_api_key', __( 'API key is not configured for this provider.', 'ai-post-generator' ) );
+            return new \WP_Error( 'afca_aipg_no_api_key', __( 'API key is not configured for this provider.', 'afca-ai-post-generator' ) );
         }
 
         $response = wp_remote_post( $url, [
@@ -80,7 +80,7 @@ abstract class AIPG_Provider_Base {
             if ( is_array( $msg ) ) {
                 $msg = wp_json_encode( $msg );
             }
-            return new \WP_Error( 'aipg_api_error', (string) $msg );
+            return new \WP_Error( 'afca_aipg_api_error', (string) $msg );
         }
 
         return $data;

@@ -23,8 +23,8 @@ class AIPG_Admin {
 		add_action( 'admin_menu', [ $this, 'register_menu' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'admin_init', [ $this, 'handle_settings_save' ] );
-		add_action( 'wp_ajax_aipg_generate_now', [ $this, 'ajax_generate_now' ] );
-		add_action( 'wp_ajax_aipg_test_api', [ $this, 'ajax_test_api' ] );
+		add_action( 'wp_ajax_afca_aipg_generate_now', [ $this, 'ajax_generate_now' ] );
+		add_action( 'wp_ajax_afca_aipg_test_api', [ $this, 'ajax_test_api' ] );
 		add_action( 'admin_notices', [ $this, 'pending_posts_notice' ] );
 	}
 
@@ -32,28 +32,28 @@ class AIPG_Admin {
 
 	public function register_menu(): void {
 		add_menu_page(
-			__( 'AI Post Generator', 'ai-post-generator' ),
-			__( 'AI Post Generator', 'ai-post-generator' ),
+			__( 'AI Post Generator', 'afca-ai-post-generator' ),
+			__( 'AI Post Generator', 'afca-ai-post-generator' ),
 			'manage_options',
-			'ai-post-generator',
+			'afca-ai-post-generator',
 			[ $this, 'render_settings_page' ],
 			'dashicons-superhero',
 			76
 		);
 		add_submenu_page(
-			'ai-post-generator',
-			__( 'Settings', 'ai-post-generator' ),
-			__( 'Settings', 'ai-post-generator' ),
+			'afca-ai-post-generator',
+			__( 'Settings', 'afca-ai-post-generator' ),
+			__( 'Settings', 'afca-ai-post-generator' ),
 			'manage_options',
-			'ai-post-generator',
+			'afca-ai-post-generator',
 			[ $this, 'render_settings_page' ]
 		);
 		add_submenu_page(
-			'ai-post-generator',
-			__( 'Generation Log', 'ai-post-generator' ),
-			__( 'Generation Log', 'ai-post-generator' ),
+			'afca-ai-post-generator',
+			__( 'Generation Log', 'afca-ai-post-generator' ),
+			__( 'Generation Log', 'afca-ai-post-generator' ),
 			'manage_options',
-			'ai-post-generator-log',
+			'afca-ai-post-generator-log',
 			[ $this, 'render_log_page' ]
 		);
 	}
@@ -61,11 +61,11 @@ class AIPG_Admin {
 	// ── Assets ────────────────────────────────────────────────────────────────
 
 	public function enqueue_assets( string $hook ): void {
-		if ( strpos( $hook, 'ai-post-generator' ) === false ) {
+		if ( strpos( $hook, 'afca-ai-post-generator' ) === false ) {
 			return;
 		}
-		wp_enqueue_style( 'aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.css', [], AFCA_AIPG_VERSION );
-		wp_enqueue_script( 'aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.js', [ 'jquery' ], AFCA_AIPG_VERSION, true );
+		wp_enqueue_style( 'afca-aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.css', [], AFCA_AIPG_VERSION );
+		wp_enqueue_script( 'afca-aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.js', [ 'jquery' ], AFCA_AIPG_VERSION, true );
 
 		// Pass provider data to JS for dynamic UI
 		$providers_js = [];
@@ -80,16 +80,16 @@ class AIPG_Admin {
 		}
 
 		wp_localize_script(
-			'aipg-admin',
-			'aipgData',
+			'afca-aipg-admin',
+			'afcaAipgData',
 			[
 				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-				'nonce'     => wp_create_nonce( 'aipg_ajax' ),
+				'nonce'     => wp_create_nonce( 'afca_aipg_ajax' ),
 				'providers' => $providers_js,
 				'strings'   => [
-					'generating' => __( 'Generating… this may take up to 30 seconds.', 'ai-post-generator' ),
-					'testing'    => __( 'Testing connection…', 'ai-post-generator' ),
-					'error'      => __( 'An error occurred. Please try again.', 'ai-post-generator' ),
+					'generating' => __( 'Generating… this may take up to 30 seconds.', 'afca-ai-post-generator' ),
+					'testing'    => __( 'Testing connection…', 'afca-ai-post-generator' ),
+					'error'      => __( 'An error occurred. Please try again.', 'afca-ai-post-generator' ),
 				],
 			]
 		);
@@ -99,8 +99,8 @@ class AIPG_Admin {
 
 	public function handle_settings_save(): void {
 		if (
-			! isset( $_POST['aipg_save_settings'] ) ||
-			! check_admin_referer( 'aipg_save_settings', 'aipg_nonce' ) ||
+			! isset( $_POST['afca_aipg_save_settings'] ) ||
+			! check_admin_referer( 'afca_aipg_save_settings', 'afca_aipg_nonce' ) ||
 			! current_user_can( 'manage_options' )
 		) {
 			return;
@@ -114,8 +114,8 @@ class AIPG_Admin {
 
 		// Per-provider API keys and models
 		foreach ( array_keys( AIPG_Settings::PROVIDERS ) as $slug ) {
-			$key_field   = "aipg_api_key_{$slug}";
-			$model_field = "aipg_model_{$slug}";
+			$key_field   = "afca_aipg_api_key_{$slug}";
+			$model_field = "afca_aipg_model_{$slug}";
 			if ( isset( $_POST[ $key_field ] ) ) {
 				AIPG_Settings::update( $key_field, sanitize_text_field( wp_unslash( $_POST[ $key_field ] ) ) );
 			}
@@ -151,7 +151,7 @@ class AIPG_Admin {
 		add_action(
 			'admin_notices',
 			function () {
-				echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully.', 'ai-post-generator' ) . '</p></div>';
+				echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully.', 'afca-ai-post-generator' ) . '</p></div>';
 			}
 		);
 	}
@@ -159,7 +159,7 @@ class AIPG_Admin {
 	// ── AJAX handlers ─────────────────────────────────────────────────────────
 
 	public function ajax_generate_now(): void {
-		check_ajax_referer( 'aipg_ajax', 'nonce' );
+		check_ajax_referer( 'afca_aipg_ajax', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( [ 'message' => 'Insufficient permissions.' ] );
 		}
@@ -189,7 +189,7 @@ class AIPG_Admin {
 	}
 
 	public function ajax_test_api(): void {
-		check_ajax_referer( 'aipg_ajax', 'nonce' );
+		check_ajax_referer( 'afca_aipg_ajax', 'nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( [ 'message' => 'Insufficient permissions.' ] );
 		}
@@ -211,13 +211,13 @@ class AIPG_Admin {
 
 	public function pending_posts_notice(): void {
 		$screen = get_current_screen();
-		if ( ! $screen || ! in_array( $screen->id, [ 'edit-post', 'toplevel_page_ai-post-generator' ], true ) ) {
+		if ( ! $screen || ! in_array( $screen->id, [ 'edit-post', 'toplevel_page_afca-ai-post-generator' ], true ) ) {
 			return;
 		}
 		$pending = get_posts(
 			[
 				'post_status'    => 'pending',
-				'meta_key'       => '_aipg_generated',
+				'meta_key'       => '_afca_aipg_generated',
 				'meta_value'     => '1',
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
@@ -231,9 +231,9 @@ class AIPG_Admin {
 		printf(
 			'<div class="notice notice-info"><p><strong>%s</strong> %s <a href="%s">%s</a></p></div>',
 			esc_html( 'AI Post Generator:' ),
-			esc_html( sprintf( _n( '%d AI-generated post is waiting for your review.', '%d AI-generated posts are waiting for your review.', $count, 'ai-post-generator' ), $count ) ),
+			esc_html( sprintf( _n( '%d AI-generated post is waiting for your review.', '%d AI-generated posts are waiting for your review.', $count, 'afca-ai-post-generator' ), $count ) ),
 			esc_url( $edit_url ),
-			esc_html__( 'Review now →', 'ai-post-generator' )
+			esc_html__( 'Review now →', 'afca-ai-post-generator' )
 		);
 	}
 

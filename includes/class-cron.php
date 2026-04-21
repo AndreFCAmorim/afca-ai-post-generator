@@ -35,7 +35,7 @@ class AIPG_Cron {
 		if ( ! isset( $schedules['weekly'] ) ) {
 			$schedules['weekly'] = [
 				'interval' => WEEK_IN_SECONDS,
-				'display'  => __( 'Once a Week', 'ai-post-generator' ),
+				'display'  => __( 'Once a Week', 'afca-ai-post-generator' ),
 			];
 		}
 		return $schedules;

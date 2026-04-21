@@ -1,4 +1,4 @@
-/* global aipgData, jQuery */
+/* global afcaAipgData, jQuery */
 (function ($) {
 	'use strict';
 
@@ -32,11 +32,11 @@
 		const $result = $panel.find('.aipg-inline-result');
 
 		$btn.prop('disabled', true);
-		$result.removeClass('success error').addClass('loading').text(aipgData.strings.testing);
+		$result.removeClass('success error').addClass('loading').text(afcaAipgData.strings.testing);
 
-		$.post(aipgData.ajaxUrl, {
-			action: 'aipg_test_api',
-			nonce: aipgData.nonce,
+		$.post(afcaAipgData.ajaxUrl, {
+			action: 'afca_aipg_test_api',
+			nonce: afcaAipgData.nonce,
 		})
 			.done(function (response) {
 				if (response.success) {
@@ -44,11 +44,11 @@
 						.text('✓ ' + response.data.message);
 				} else {
 					$result.removeClass('loading success').addClass('error')
-						.text('✗ ' + (response.data.message || aipgData.strings.error));
+						.text('✗ ' + (response.data.message || afcaAipgData.strings.error));
 				}
 			})
 			.fail(function () {
-				$result.removeClass('loading success').addClass('error').text('✗ ' + aipgData.strings.error);
+				$result.removeClass('loading success').addClass('error').text('✗ ' + afcaAipgData.strings.error);
 			})
 			.always(function () { $btn.prop('disabled', false); });
 	});
@@ -60,11 +60,11 @@
 
 		$btn.prop('disabled', true);
 		$result.removeClass('success error').show()
-			.html('<em>' + aipgData.strings.generating + '</em>');
+			.html('<em>' + afcaAipgData.strings.generating + '</em>');
 
-		$.post(aipgData.ajaxUrl, {
-			action: 'aipg_generate_now',
-			nonce: aipgData.nonce,
+		$.post(afcaAipgData.ajaxUrl, {
+			action: 'afca_aipg_generate_now',
+			nonce: afcaAipgData.nonce,
 		})
 			.done(function (response) {
 				if (response.success) {
@@ -87,11 +87,11 @@
 					$result.removeClass('error').addClass(anySuccess ? 'success' : 'error').html(html);
 				} else {
 					$result.removeClass('success').addClass('error')
-						.html('✗ ' + escHtml(response.data?.message || aipgData.strings.error));
+						.html('✗ ' + escHtml(response.data?.message || afcaAipgData.strings.error));
 				}
 			})
 			.fail(function () {
-				$result.removeClass('success').addClass('error').html('✗ ' + escHtml(aipgData.strings.error));
+				$result.removeClass('success').addClass('error').html('✗ ' + escHtml(afcaAipgData.strings.error));
 			})
 			.always(function () { $btn.prop('disabled', false); });
 	});
@@ -101,7 +101,7 @@
 		return $('<div>').text(str || '').html();
 	}
 	function getEditUrl(postId) {
-		return aipgData.ajaxUrl.replace('admin-ajax.php', 'post.php') + '?post=' + postId + '&action=edit';
+		return afcaAipgData.ajaxUrl.replace('admin-ajax.php', 'post.php') + '?post=' + postId + '&action=edit';
 	}
 
 })(jQuery);
