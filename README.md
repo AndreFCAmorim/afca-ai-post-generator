@@ -1,13 +1,13 @@
 # AI Post Generator — WordPress Plugin
 
-Automatically drafts WordPress posts on a schedule using **Google Gemini AI**.  
+Automatically drafts WordPress posts on a schedule using AI: **Groq, OpenRouter, OpenAI, Gemini, Mistral, Claude**.
 All posts are created with **Pending** status, so an editor reviews and approves them before they go live.
 
 ---
 
 ## Features
 
-- 🤖 **Gemini-powered** — uses `gemini-2.0-flash` (or your choice of model)
+- 🤖 **AI-powered** — choose a provider and a model
 - 📅 **Flexible scheduling** — hourly, twice daily, daily, or weekly via WP-Cron
 - 💡 **Topic list** — one topic per line; a random one is picked each run
 - 📋 **Custom requirements** — enforce tone, format, word count, and mandatory sections (e.g., always include sources)
@@ -101,20 +101,26 @@ Or with WP-CLI:
 
 ```
 ai-post-generator/
-├── ai-post-generator.php          # Plugin bootstrap & constants
+├── ai-post-generator.php                    # Plugin bootstrap & constants
 ├── includes/
-│   ├── class-settings.php         # All option keys & getters
-│   ├── class-gemini.php           # Gemini REST API client
-│   ├── class-generator.php        # Prompt builder & post creator
-│   ├── class-cron.php             # WP-Cron scheduling
-│   └── class-admin.php            # Admin menu, forms, AJAX
+│   ├── providers/
+│   │   ├── class-provider-anthropic.php     # Anthropic Messages API (Claude models)
+│   │   ├── class-provider-base.php          # Abstract base class that every AI provider must extend
+│   │   ├── class-provider-factory.php       # Creates the correct provider instance
+│   │   ├── class-provider-gemini.php        # Google Gemini AI
+│   │   └── class-provider-openai-compat.php # OpenAI ChatGPT AI
+│   ├── class-settings.php                   # All option keys & getters
+│   ├── class-gemini.php                     # Gemini REST API client
+│   ├── class-generator.php                  # Prompt builder & post creator
+│   ├── class-cron.php                       # WP-Cron scheduling
+│   └── class-admin.php                      # Admin menu, forms, AJAX
 ├── admin/
 │   └── views/
-│       ├── settings.php           # Settings page HTML
-│       └── log.php                # Generation log HTML
+│       ├── settings.php                     # Settings page HTML
+│       └── log.php                          # Generation log HTML
 └── assets/
-    ├── admin.css                  # Admin styles
-    └── admin.js                   # Admin interactions
+    ├── admin.css                            # Admin styles
+    └── admin.js                             # Admin interactions
 ```
 
 ---
