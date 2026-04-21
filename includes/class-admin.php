@@ -64,8 +64,8 @@ class AIPG_Admin {
 		if ( strpos( $hook, 'ai-post-generator' ) === false ) {
 			return;
 		}
-		wp_enqueue_style( 'aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.css', [], AIPG_VERSION );
-		wp_enqueue_script( 'aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.js', [ 'jquery' ], AIPG_VERSION, true );
+		wp_enqueue_style( 'aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.css', [], AFCA_AIPG_VERSION );
+		wp_enqueue_script( 'aipg-admin', AFCA_AIPG_PLUGIN_URL . 'assets/admin.js', [ 'jquery' ], AFCA_AIPG_VERSION, true );
 
 		// Pass provider data to JS for dynamic UI
 		$providers_js = [];

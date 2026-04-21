@@ -16,6 +16,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ─── Constants ────────────────────────────────────────────────────────────────
+define( 'AFCA_AIPG_VERSION',     '2.0.0' );
 define( 'AFCA_AIPG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AFCA_AIPG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AFCA_AIPG_CRON_HOOK', 'aipg_generate_post_event' );
